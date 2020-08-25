@@ -7,6 +7,7 @@ java_binary(
     runtime_deps = [
         "@rules_dokka_dependencies//:org_jetbrains_dokka_dokka_analysis",
         "@rules_dokka_dependencies//:org_jetbrains_dokka_dokka_cli",
+        "@rules_dokka_dependencies//:org_jetbrains_kotlin_kotlin_stdlib",
     ],
 )
 
