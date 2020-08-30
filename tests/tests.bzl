@@ -8,11 +8,6 @@ load("//dokka:defs.bzl", "dokka")
 def _dokka_actions_test(ctx):
     env = analysistest.begin(ctx)
 
-    source_dir = ctx.build_file_path.replace("/BUILD", "")
-    output_dir = ctx.bin_dir.path
-    print(source_dir)
-    print(output_dir)
-
     _test_dokka_actions(ctx, env)
     _test_dokka_args(ctx, env)
     _test_dokka_inputs(ctx, env)
