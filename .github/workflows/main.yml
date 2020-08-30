@@ -10,6 +10,23 @@ env:
   VERSION_BAZELISK: "1.6.1"
   VERSION_BUILDIFIER: "3.4.1"
 jobs:
+  buildifier:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout the sources"
+        uses: actions/checkout@v2.3.1
+      - name: "Install the JDK"
+        uses: actions/setup-java@v1.3.0
+        with:
+          java-version: "11.0.5"
+      - name: Install buildifier
+        run: |
+          curl -LO "https://github.com/bazelbuild/buildtools/releases/download/${VERSION_BUILDIFIER}/buildifier"
+          mkdir -p "${GITHUB_WORKSPACE}/bin/"
+          mv buildifier "${GITHUB_WORKSPACE}/bin/buildifier"
+          chmod +x "${GITHUB_WORKSPACE}/bin/buildifier"
+      - name: "Linting"
+        run: buildifier -mode check -lint warn -r .
   build:
     runs-on: ubuntu-latest
     steps:
