@@ -6,6 +6,10 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 
 def rules_dokka_dependencies():
+    """Fetches the dependencies for rules_dokka
+    Fetches dependencies for the `rules_dokka` WORKSPACE.
+    """
+
     # Kotlin
     RULES_KOTLIN_VERSION = "legacy-1.3.0"
     RULES_KOTLIN_SHA = "2ba27f0fa8305a28bc1b9b3a3f4e6b91064b3c0021365fa9344ba3af88657e1b"
