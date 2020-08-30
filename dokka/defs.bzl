@@ -121,11 +121,11 @@ dokka = rule(
             doc = "Include protected and private code",
         ),
         "skipEmptyPackages": attr.bool(
-            default = True,
+            default = False,
             doc = "Do not create index pages for empty packages",
         ),
         "skipDeprecated": attr.bool(
-            default = True,
+            default = False,
             doc = "When set, deprecated elements are not included in the generated documentation",
         ),
         "reportUndocumented": attr.bool(
