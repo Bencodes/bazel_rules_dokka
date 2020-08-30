@@ -1,3 +1,7 @@
+"""
+The rule definitions
+"""
+
 def _dokka_impl(ctx):
     # Inputs and outputs for bazel
     inputs = []
