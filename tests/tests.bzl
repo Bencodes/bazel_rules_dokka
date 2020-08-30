@@ -32,9 +32,9 @@ def _test_dokka_args(ctx, env):
     asserts.equals(env, [
         "bazel-out/host/bin/dokka/dokka_cli",
         "-pluginsClasspath",
-        "bazel-out/darwin-fastbuild/bin/dokka/libdokka_javadoc.jar",
+        "{bin_dir}/dokka/libdokka_javadoc.jar".format(bin_dir = ctx.bin_dir.path),
         "-outputDir",
-        "bazel-out/darwin-fastbuild/bin/tests/dokka_javadoc_test",
+        "{bin_dir}/tests/dokka_javadoc_test".format(bin_dir = ctx.bin_dir.path),
         "-offlineMode",
         "-failOnWarning",
         "-sourceSet",
