@@ -7,6 +7,7 @@ load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 
 def rules_dokka_dependencies():
     """Fetches the dependencies for rules_dokka
+
     Fetches dependencies for the `rules_dokka` WORKSPACE.
     """
 
