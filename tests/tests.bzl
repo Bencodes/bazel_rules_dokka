@@ -1,3 +1,7 @@
+"""
+Tests for the Dokka rules
+"""
+
 load("@bazel_skylib//lib:unittest.bzl", "analysistest", "asserts")
 load("//dokka:defs.bzl", "dokka")
 
