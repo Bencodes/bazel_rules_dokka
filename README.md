@@ -43,6 +43,31 @@ dokka(
 )
 ```
 
+### Supported `dokka-cli` arguments
+
+See the Dokka [docs](https://github.com/Kotlin/dokka#using-the-command-line) for more information.
+
+```starlark
+dokka(
+    name = "dokka_javadoc_test",
+    srcs = [ ... ],
+    moduleName = "name goes here",
+    moduleDisplayName = "display name goes here",
+    offlineMode = False,
+    failOnWarning = False,
+    noStdlibLink = False,
+    noJdkLink = False,
+    jdkVersion = "1.8",
+    includeNonPublic = False,
+    skipEmptyPackages = False,
+    skipDeprecated = False,
+    reportUndocumented = False,
+    plugins = [
+        ...
+    ],
+)
+```
+
 ## Building
 
 `$ bazel build //sample:sample_dokka_docs`
