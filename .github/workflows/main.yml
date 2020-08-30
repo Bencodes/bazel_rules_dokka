@@ -1,0 +1,44 @@
+name: main
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+jobs:
+  buildifier:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout the sources"
+        uses: actions/checkout@v2.3.1
+      - name: "Install the JDK"
+        uses: actions/setup-java@v1.3.0
+        with:
+          java-version: "11.0.5"
+      - name: Install buildifier
+        run: |
+          curl -LO "https://github.com/bazelbuild/buildtools/releases/download/3.4.0/buildifier"
+          mkdir -p "${GITHUB_WORKSPACE}/bin/"
+          mv buildifier "${GITHUB_WORKSPACE}/bin/buildifier"
+          chmod +x "${GITHUB_WORKSPACE}/bin/buildifier"
+      - name: "Linting"
+        run: $GITHUB_WORKSPACE/bin/buildifier -mode check -lint warn -r .
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout the sources"
+        uses: actions/checkout@v2.3.1
+      - name: "Install the JDK"
+        uses: actions/setup-java@v1.3.0
+        with:
+          java-version: "11.0.5"
+      - name: Install bazelisk
+        run: |
+          curl -LO "https://github.com/bazelbuild/bazelisk/releases/download/v1.6.1/bazelisk-linux-amd64"
+          mkdir -p "${GITHUB_WORKSPACE}/bin/"
+          mv bazelisk-linux-amd64 "${GITHUB_WORKSPACE}/bin/bazel"
+          chmod +x "${GITHUB_WORKSPACE}/bin/bazel"
+      - name: "Running unit tests"
+        run: $GITHUB_WORKSPACE/bin/bazel test //tests:tests
+      - name: "Running integrations"
+        run: $GITHUB_WORKSPACE/bin/bazel test //tests/integration:does_build
