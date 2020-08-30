@@ -22,7 +22,7 @@ jobs:
           mv buildifier "${GITHUB_WORKSPACE}/bin/buildifier"
           chmod +x "${GITHUB_WORKSPACE}/bin/buildifier"
       - name: "Linting"
-        run: buildifier -mode check -lint warn -r .
+        run: $GITHUB_WORKSPACE/bin/buildifier -mode check -lint warn -r .
   build:
     runs-on: ubuntu-latest
     steps:
@@ -39,6 +39,6 @@ jobs:
           mv bazelisk-linux-amd64 "${GITHUB_WORKSPACE}/bin/bazel"
           chmod +x "${GITHUB_WORKSPACE}/bin/bazel"
       - name: "Running unit tests"
-        run: bazel test //tests:tests
+        run: $GITHUB_WORKSPACE/bin/bazel test //tests:tests
       - name: "Running integrations"
-        run: bazel test //tests/integration:does_build
+        run: $GITHUB_WORKSPACE/bin/bazel test //tests/integration:does_build
