@@ -12,7 +12,7 @@ Bazel rules for [Dokka](https://github.com/Kotlin/dokka) (documentation engine f
 
 ### `WORKSPACE` configuration
 
-```starlalrk
+```python
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 RULES_DOKKA_VERSION = "..."
@@ -34,7 +34,7 @@ rules_dokka_toolchains()
 
 ### `BUILD` configuration
 
-```starlark
+```python
 load("@rules_dokka//dokka:defs.bzl", "dokka")
 
 dokka(
@@ -47,7 +47,7 @@ dokka(
 
 See the Dokka [docs](https://github.com/Kotlin/dokka#using-the-command-line) for more information.
 
-```starlark
+```python
 dokka(
     name = "dokka_javadoc_test",
     srcs = [ ... ],
@@ -78,7 +78,7 @@ dokka(
 
 Call `rules_dokka_toolchains` with the `dokka_version` provided:
 
-```starlark
+```console
 rules_dokka_toolchains(dokka_version = "1.4.0-rc")
 ```
 
@@ -86,7 +86,7 @@ rules_dokka_toolchains(dokka_version = "1.4.0-rc")
 
 Download the Dokka Jeykell maven plugins by adding the following to your `WORKSPACE`. Don't forget to include the transitive dependencies!
 
-```starlark
+```python
 DOKKA_VERSION = "1.4.0-rc"
 
 maven_install(
@@ -100,7 +100,7 @@ maven_install(
 
 Override the `plugins` attribute in your `BUILD` file with your own Dokka plugin and provide the classpath jars:
 
-```starlark
+```python
 dokka(
     name = "sample_dokka_docs",
     srcs = glob(["src/main/kotlin/**/*.kt"]),
