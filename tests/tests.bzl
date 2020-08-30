@@ -8,6 +8,11 @@ load("//dokka:defs.bzl", "dokka")
 def _dokka_actions_test(ctx):
     env = analysistest.begin(ctx)
 
+    source_dir = ctx.build_file_path.replace("/BUILD", "")
+    output_dir = ctx.bin_dir.path
+    print(source_dir)
+    print(output_dir)
+
     _test_dokka_actions(ctx, env)
     _test_dokka_args(ctx, env)
     _test_dokka_inputs(ctx, env)
@@ -32,9 +37,9 @@ def _test_dokka_args(ctx, env):
     asserts.equals(env, [
         "bazel-out/host/bin/dokka/dokka_cli",
         "-pluginsClasspath",
-        "bazel-out/darwin-fastbuild/bin/dokka/libdokka_javadoc.jar",
+        "{bin_dir}/dokka/libdokka_javadoc.jar".format(bin_dir = ctx.bin_dir.path),
         "-outputDir",
-        "bazel-out/darwin-fastbuild/bin/tests/dokka_javadoc_test",
+        "{bin_dir}/tests/dokka_javadoc_test".format(bin_dir = ctx.bin_dir.path),
         "-offlineMode",
         "-failOnWarning",
         "-sourceSet",
