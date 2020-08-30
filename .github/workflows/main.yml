@@ -23,7 +23,7 @@ jobs:
           chmod +x "${GITHUB_WORKSPACE}/bin/buildifier"
       - name: "Linting"
         run: $GITHUB_WORKSPACE/bin/buildifier -mode check -lint warn -r .
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout the sources"
