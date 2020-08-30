@@ -1,6 +1,9 @@
 # bazel_rules_dokka
 
-Bazel rules for [Dokka](https://github.com/Kotlin/dokka) (documentation engine for Kotlin)
+Bazel rules for [Dokka](https://github.com/Kotlin/dokka) (documentation engine for Kotlin) 
+
+![CI](https://github.com/Bencodes/bazel_rules_dokka/workflows/CI/badge.svg?branch=master)
+[![GitHub license](https://img.shields.io/github/license/Bencodes/bazel_rules_dokka)](https://github.com/Bencodes/bazel_rules_dokka/blob/master/LICENSE)
 
 ## Features
 
