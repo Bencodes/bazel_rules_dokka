@@ -1,4 +1,4 @@
-load("//dokka:defs.bzl", "dokka")
+load("@rules_dokka//dokka:defs.bzl", "dokka")
 load("@bazel_skylib//rules:build_test.bzl", "build_test")
 
 dokka(
