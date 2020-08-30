@@ -2,7 +2,7 @@
 
 Bazel rules for [Dokka](https://github.com/Kotlin/dokka) (documentation engine for Kotlin)
 
-[![Test](https://github.com/Bencodes/bazel_rules_dokka/workflows/Test/badge.svg)](https://github.com/Bencodes/bazel_rules_dokka/actions?query=workflow%3ATest)
+![CI](https://github.com/Bencodes/bazel_rules_dokka/workflows/CI/badge.svg?branch=master)
 
 ## Features
 
