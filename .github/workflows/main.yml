@@ -17,7 +17,7 @@ jobs:
           java-version: "11.0.5"
       - name: Install buildifier
         run: |
-          curl -LO "https://github.com/bazelbuild/buildtools/releases/download/3.4.0/buildifier"
+          curl -LO "https://github.com/bazelbuild/buildtools/releases/download/3.5.0/buildifier"
           mkdir -p "${GITHUB_WORKSPACE}/bin/"
           mv buildifier "${GITHUB_WORKSPACE}/bin/buildifier"
           chmod +x "${GITHUB_WORKSPACE}/bin/buildifier"
