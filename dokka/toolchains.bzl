@@ -6,7 +6,7 @@ load("@io_bazel_rules_kotlin//kotlin:kotlin.bzl", "kotlin_repositories", "kt_reg
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 load("@rules_jvm_external//:specs.bzl", "maven")
 
-def rules_dokka_toolchains(dokka_version = "1.4.100"):
+def rules_dokka_toolchains(dokka_version = "1.4.0"):
     kotlin_repositories()
     kt_register_toolchains()
 
