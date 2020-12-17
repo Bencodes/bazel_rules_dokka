@@ -17,12 +17,12 @@ jobs:
           java-version: "11.0.5"
       - name: Install buildifier
         run: |
-          curl -LO "https://github.com/bazelbuild/buildtools/releases/download/3.5.0/buildifier"
-          mkdir -p "${GITHUB_WORKSPACE}/bin/"
-          mv buildifier "${GITHUB_WORKSPACE}/bin/buildifier"
-          chmod +x "${GITHUB_WORKSPACE}/bin/buildifier"
+          curl --location --fail "https://github.com/bazelbuild/buildtools/releases/download/3.5.0/buildifier" --output /tmp/buildifier
+          buildifier --version
+          chmod +x /tmp/buildifier && echo "/tmp/" >> $GITHUB_PATH
+          buildifier --version 
       - name: "Linting"
-        run: $GITHUB_WORKSPACE/bin/buildifier -mode check -lint warn -r .
+        run: buildifier -mode check -lint warn -r .
   test:
     runs-on: ubuntu-latest
     steps:
@@ -34,11 +34,11 @@ jobs:
           java-version: "11.0.5"
       - name: Install bazelisk
         run: |
-          curl -LO "https://github.com/bazelbuild/bazelisk/releases/download/v1.7.4/bazelisk-linux-amd64"
-          mkdir -p "${GITHUB_WORKSPACE}/bin/"
-          mv bazelisk-linux-amd64 "${GITHUB_WORKSPACE}/bin/bazel"
-          chmod +x "${GITHUB_WORKSPACE}/bin/bazel"
+          curl --location --fail "https://github.com/bazelbuild/bazelisk/releases/download/v1.7.4/bazelisk-linux-amd64" --output /tmp/bazel
+          bazel --version
+          chmod +x /tmp/bazel && echo "/tmp/" >> $GITHUB_PATH
+          bazel --version
       - name: "Running unit tests"
-        run: $GITHUB_WORKSPACE/bin/bazel test //tests:tests
+        run: bazel test //tests:tests
       - name: "Running integrations"
-        run: $GITHUB_WORKSPACE/bin/bazel test //tests/integration:does_build
+        run: bazel test //tests/integration:does_build
