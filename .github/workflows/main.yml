@@ -18,9 +18,7 @@ jobs:
       - name: Install buildifier
         run: |
           curl --location --fail "https://github.com/bazelbuild/buildtools/releases/download/3.5.0/buildifier" --output /tmp/buildifier
-          buildifier --version
           chmod +x /tmp/buildifier && echo "/tmp/" >> $GITHUB_PATH
-          buildifier --version 
       - name: "Linting"
         run: buildifier -mode check -lint warn -r .
   test:
@@ -35,9 +33,7 @@ jobs:
       - name: Install bazelisk
         run: |
           curl --location --fail "https://github.com/bazelbuild/bazelisk/releases/download/v1.7.4/bazelisk-linux-amd64" --output /tmp/bazel
-          bazel --version
           chmod +x /tmp/bazel && echo "/tmp/" >> $GITHUB_PATH
-          bazel --version
       - name: "Running unit tests"
         run: bazel test //tests:tests
       - name: "Running integrations"
