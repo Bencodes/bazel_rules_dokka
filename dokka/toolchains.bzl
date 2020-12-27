@@ -2,14 +2,10 @@
 Toolchains required by Dokka
 """
 
-load("@io_bazel_rules_kotlin//kotlin:kotlin.bzl", "kotlin_repositories", "kt_register_toolchains")
 load("@rules_jvm_external//:defs.bzl", "maven_install")
 load("@rules_jvm_external//:specs.bzl", "maven")
 
 def rules_dokka_toolchains(dokka_version = "1.4.0"):
-    kotlin_repositories()
-    kt_register_toolchains()
-
     maven_install(
         name = "rules_dokka_dependencies",
         artifacts = [

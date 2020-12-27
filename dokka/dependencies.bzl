@@ -11,18 +11,6 @@ def rules_dokka_dependencies():
     Fetches dependencies for the `rules_dokka` WORKSPACE.
     """
 
-    # Kotlin
-    RULES_KOTLIN_VERSION = "legacy-1.3.0"
-    RULES_KOTLIN_SHA = "2ba27f0fa8305a28bc1b9b3a3f4e6b91064b3c0021365fa9344ba3af88657e1b"
-
-    maybe(
-        repo_rule = http_archive,
-        name = "io_bazel_rules_kotlin",
-        url = "https://github.com/bazelbuild/rules_kotlin/archive/{}.tar.gz".format(RULES_KOTLIN_VERSION),
-        strip_prefix = "rules_kotlin-{}".format(RULES_KOTLIN_VERSION),
-        sha256 = RULES_KOTLIN_SHA,
-    )
-
     # JVM External
 
     RULES_JVM_EXTERNAL = "3.3"
