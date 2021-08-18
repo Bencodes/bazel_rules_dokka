@@ -11,8 +11,9 @@ def rules_dokka_toolchains(dokka_version = "1.4.0"):
         artifacts = [
             maven.artifact("org.jetbrains.dokka", "dokka-cli", dokka_version),
             maven.artifact("org.jetbrains.dokka", "dokka-analysis", dokka_version),
-            maven.artifact("org.jetbrains.dokka", "javadoc-plugin", dokka_version),
             maven.artifact("org.jetbrains.dokka", "dokka-base", dokka_version),
+            maven.artifact("org.jetbrains.dokka", "gfm-plugin", dokka_version),
+            maven.artifact("org.jetbrains.dokka", "javadoc-plugin", dokka_version),
             maven.artifact("org.jetbrains.kotlin", "kotlin-stdlib-jdk8", dokka_version),
             maven.artifact("org.jetbrains.kotlin", "kotlin-stdlib", dokka_version),
             maven.artifact("org.jetbrains.kotlin", "kotlin-reflect", dokka_version),
