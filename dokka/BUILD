@@ -12,6 +12,32 @@ java_binary(
 )
 
 java_library(
+    name = "dokka_gfm",
+    resource_jars = [
+        "@rules_dokka_dependencies//:org_jetbrains_dokka_dokka_base",
+        "@rules_dokka_dependencies//:org_jetbrains_dokka_gfm_plugin",
+        "@rules_dokka_dependencies//:org_jetbrains_kotlin_kotlin_reflect",
+        "@rules_dokka_dependencies//:org_jetbrains_kotlin_kotlin_stdlib",
+        "@rules_dokka_dependencies//:org_jetbrains_kotlin_kotlin_stdlib_jdk8",
+        "@rules_dokka_dependencies//:org_jetbrains_kotlinx_kotlinx_coroutines_core",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+java_library(
+    name = "dokka_html",
+    resource_jars = [
+        "@rules_dokka_dependencies//:org_jetbrains_dokka_dokka_base",
+        "@rules_dokka_dependencies//:org_jetbrains_kotlin_kotlin_reflect",
+        "@rules_dokka_dependencies//:org_jetbrains_kotlin_kotlin_stdlib",
+        "@rules_dokka_dependencies//:org_jetbrains_kotlin_kotlin_stdlib_jdk8",
+        "@rules_dokka_dependencies//:org_jetbrains_kotlinx_kotlinx_coroutines_core",
+        "@rules_dokka_dependencies//:org_jetbrains_kotlinx_kotlinx_html_jvm",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+java_library(
     name = "dokka_javadoc",
     resource_jars = [
         "@rules_dokka_dependencies//:com_soywiz_korlibs_korte_korte_jvm",
