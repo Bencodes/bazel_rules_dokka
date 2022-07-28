@@ -1,4 +1,4 @@
-load("@rules_java//java:defs.bzl", "java_binary", "java_library")
+load("@rules_java//java:defs.bzl", "java_binary", "java_import")
 
 java_binary(
     name = "dokka_cli",
@@ -11,9 +11,9 @@ java_binary(
     ],
 )
 
-java_library(
+java_import(
     name = "dokka_gfm",
-    resource_jars = [
+    runtime_deps = [
         "@rules_dokka_dependencies//:org_jetbrains_dokka_dokka_base",
         "@rules_dokka_dependencies//:org_jetbrains_dokka_gfm_plugin",
         "@rules_dokka_dependencies//:org_jetbrains_kotlin_kotlin_reflect",
@@ -24,9 +24,9 @@ java_library(
     visibility = ["//visibility:public"],
 )
 
-java_library(
+java_import(
     name = "dokka_html",
-    resource_jars = [
+    runtime_deps = [
         "@rules_dokka_dependencies//:org_jetbrains_dokka_dokka_base",
         "@rules_dokka_dependencies//:org_jetbrains_kotlin_kotlin_reflect",
         "@rules_dokka_dependencies//:org_jetbrains_kotlin_kotlin_stdlib",
@@ -37,9 +37,9 @@ java_library(
     visibility = ["//visibility:public"],
 )
 
-java_library(
+java_import(
     name = "dokka_javadoc",
-    resource_jars = [
+    runtime_deps = [
         "@rules_dokka_dependencies//:com_soywiz_korlibs_korte_korte_jvm",
         "@rules_dokka_dependencies//:org_jetbrains_dokka_dokka_base",
         "@rules_dokka_dependencies//:org_jetbrains_dokka_javadoc_plugin",
