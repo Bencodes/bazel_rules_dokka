@@ -13,8 +13,8 @@ def rules_dokka_dependencies():
 
     # JVM External
 
-    RULES_JVM_EXTERNAL = "3.3"
-    RULES_JVM_EXTERNAL_SHA = "2a547d8d5e99703de8de54b6188ff0ed470b3bfc88e346972d1c8865e2688391"
+    RULES_JVM_EXTERNAL = "4.2"
+    RULES_JVM_EXTERNAL_SHA = "cd1a77b7b02e8e008439ca76fd34f5b07aecb8c752961f9640dea15e9e5ba1ca"
 
     maybe(
         repo_rule = http_archive,
