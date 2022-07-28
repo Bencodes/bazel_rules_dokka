@@ -1,4 +1,4 @@
-load("@rules_java//java:defs.bzl", "java_binary", "java_import")
+load("@rules_java//java:defs.bzl", "java_binary", "java_library")
 
 java_binary(
     name = "dokka_cli",
@@ -11,7 +11,7 @@ java_binary(
     ],
 )
 
-java_import(
+java_library(
     name = "dokka_gfm",
     runtime_deps = [
         "@rules_dokka_dependencies//:org_jetbrains_dokka_dokka_base",
@@ -24,7 +24,7 @@ java_import(
     visibility = ["//visibility:public"],
 )
 
-java_import(
+java_library(
     name = "dokka_html",
     runtime_deps = [
         "@rules_dokka_dependencies//:org_jetbrains_dokka_dokka_base",
@@ -37,7 +37,7 @@ java_import(
     visibility = ["//visibility:public"],
 )
 
-java_import(
+java_library(
     name = "dokka_javadoc",
     runtime_deps = [
         "@rules_dokka_dependencies//:com_soywiz_korlibs_korte_korte_jvm",
