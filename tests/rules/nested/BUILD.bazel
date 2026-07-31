@@ -1,8 +1,0 @@
-load("//dokka:defs.bzl", "dokka")
-
-dokka(
-    name = "docs",
-    srcs = ["Nested.kt"],
-    tags = ["manual"],
-    visibility = ["//tests/rules:__pkg__"],
-)

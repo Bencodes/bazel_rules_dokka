@@ -1,16 +1,20 @@
 load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
 load("//dokka:defs.bzl", "dokka", "dokka_config", "dokka_multi_module")
-load(":dokka_analysis_test.bzl", "dokka_analysis_test_suite")
+load("//tests/fixtures:common.bzl", "FIXTURE_TAGS")
+
+package(default_visibility = ["//tests:__subpackages__"])
 
 kt_jvm_library(
     name = "dependency",
     srcs = ["Dependency.kt"],
     neverlink = True,
+    tags = FIXTURE_TAGS,
 )
 
 kt_jvm_library(
     name = "custom_plugin",
     srcs = ["CustomPlugin.kt"],
+    tags = FIXTURE_TAGS,
 )
 
 dokka_config(
@@ -37,6 +41,7 @@ dokka_config(
     suppress_annotated_with = ["com.example.InternalApi"],
     suppress_inherited_members = True,
     suppress_obvious_functions = False,
+    tags = FIXTURE_TAGS,
 )
 
 dokka_config(
@@ -63,12 +68,13 @@ dokka_config(
     suppress_annotated_with = ["com.example.ExperimentalApi"],
     suppress_inherited_members = True,
     suppress_obvious_functions = False,
+    tags = FIXTURE_TAGS,
 )
 
 dokka_config(
     name = "wasm_config",
     analysis_platform = "wasm",
-    tags = ["manual"],
+    tags = FIXTURE_TAGS,
 )
 
 dokka(
@@ -81,7 +87,7 @@ dokka(
     module_version = "1.2.3",
     samples = ["Sample.kt"],
     suppressed_files = ["Suppressed.kt"],
-    tags = ["manual"],
+    tags = FIXTURE_TAGS,
     deps = [":dependency"],
 )
 
@@ -89,26 +95,26 @@ dokka(
     name = "wasm_fixture",
     srcs = ["Fixture.kt"],
     config = ":wasm_config",
-    tags = ["manual"],
+    tags = FIXTURE_TAGS,
 )
 
 dokka(
     name = "defaults_fixture",
     srcs = ["Fixture.kt"],
-    tags = ["manual"],
+    tags = FIXTURE_TAGS,
 )
 
 dokka(
     name = "deps_fixture",
     srcs = ["DepsFixture.kt"],
-    tags = ["manual"],
+    tags = FIXTURE_TAGS,
     deps = [":dependency"],
 )
 
 dokka(
     name = "docs",
     srcs = ["Fixture.kt"],
-    tags = ["manual"],
+    tags = FIXTURE_TAGS,
 )
 
 dokka(
@@ -117,28 +123,28 @@ dokka(
     includes = ["module.md"],
     module_name = "API",
     module_path = "api",
-    tags = ["manual"],
+    tags = FIXTURE_TAGS,
 )
 
 dokka(
     name = "duplicate_module_path_fixture",
     srcs = ["Fixture.kt"],
     module_path = "api",
-    tags = ["manual"],
+    tags = FIXTURE_TAGS,
 )
 
 dokka(
     name = "invalid_module_path_fixture",
     srcs = ["Fixture.kt"],
     module_path = "../invalid",
-    tags = ["manual"],
+    tags = FIXTURE_TAGS,
 )
 
 dokka(
     name = "reserved_module_path_fixture",
     srcs = ["Fixture.kt"],
     module_path = "scripts/api",
-    tags = ["manual"],
+    tags = FIXTURE_TAGS,
 )
 
 dokka_multi_module(
@@ -146,10 +152,10 @@ dokka_multi_module(
     config = ":shared_config",
     includes = ["module.md"],
     modules = [
-        "//tests/rules/nested:docs",
+        "//tests/fixtures/analysis/nested:docs",
         ":module_api_fixture",
     ],
-    tags = ["manual"],
+    tags = FIXTURE_TAGS,
     title = "Project API Reference",
 )
 
@@ -159,34 +165,34 @@ dokka_multi_module(
         ":module_api_fixture",
         ":duplicate_module_path_fixture",
     ],
-    tags = ["manual"],
+    tags = FIXTURE_TAGS,
 )
 
 dokka_multi_module(
     name = "duplicate_module_name_aggregate_fixture",
     modules = [
-        "//tests/rules/nested:docs",
+        "//tests/fixtures/analysis/nested:docs",
         ":docs",
     ],
-    tags = ["manual"],
+    tags = FIXTURE_TAGS,
 )
 
 dokka_multi_module(
     name = "invalid_path_aggregate_fixture",
     modules = [":invalid_module_path_fixture"],
-    tags = ["manual"],
+    tags = FIXTURE_TAGS,
 )
 
 dokka_multi_module(
     name = "reserved_path_aggregate_fixture",
     modules = [":reserved_module_path_fixture"],
-    tags = ["manual"],
+    tags = FIXTURE_TAGS,
 )
 
 dokka_multi_module(
     name = "non_html_aggregate_fixture",
     modules = [":analysis_fixture"],
-    tags = ["manual"],
+    tags = FIXTURE_TAGS,
 )
 
 dokka(
@@ -197,13 +203,11 @@ dokka(
     includes = ["module.md"],
     module_name = "configured-module",
     module_version = "4.5.6",
-    tags = ["manual"],
+    tags = FIXTURE_TAGS,
 )
 
 dokka_config(
     name = "invalid_config_fixture",
     documented_visibilities = ["public"],
-    tags = ["manual"],
+    tags = FIXTURE_TAGS,
 )
-
-dokka_analysis_test_suite(name = "tests")

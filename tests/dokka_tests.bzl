@@ -30,7 +30,7 @@ def _dokka_configuration_test_impl(ctx):
     info = target[DokkaInfo]
     asserts.equals(env, "gfm", info.format)
     asserts.equals(env, "fixture-module", info.module_name)
-    asserts.equals(env, "tests/rules", info.module_path)
+    asserts.equals(env, "tests/fixtures/analysis", info.module_path)
     asserts.equals(env, None, info.partial_documentation)
 
     documentation_files = target[DefaultInfo].files.to_list()
@@ -177,7 +177,7 @@ def _dokka_defaults_test_impl(ctx):
 
     asserts.equals(env, "html", info.format)
     asserts.equals(env, "defaults_fixture", info.module_name)
-    asserts.equals(env, "tests/rules", info.module_path)
+    asserts.equals(env, "tests/fixtures/analysis", info.module_path)
     asserts.true(env, info.partial_documentation.is_directory)
     asserts.equals(
         env,
@@ -313,7 +313,7 @@ def _dokka_multi_module_test_impl(ctx):
         asserts.equals(env, "docs", modules[1]["name"])
         asserts.equals(
             env,
-            "tests/rules/nested",
+            "tests/fixtures/analysis/nested",
             modules[1]["relativePathToOutputDirectory"],
         )
         asserts.equals(env, [], modules[1]["includes"])
@@ -468,7 +468,7 @@ _non_html_module_test = analysistest.make(
     expect_failure = True,
 )
 
-def dokka_analysis_test_suite(name):
+def dokka_test_suite(name):
     """Defines the Dokka analysis test suite.
 
     Args:
@@ -476,66 +476,65 @@ def dokka_analysis_test_suite(name):
     """
     _dokka_configuration_test(
         name = name + "_configuration",
-        target_under_test = ":analysis_fixture",
+        tags = [name],
+        target_under_test = "//tests/fixtures/analysis:analysis_fixture",
     )
     _dokka_defaults_test(
         name = name + "_defaults",
-        target_under_test = ":defaults_fixture",
+        tags = [name],
+        target_under_test = "//tests/fixtures/analysis:defaults_fixture",
     )
     _dokka_deps_test(
         name = name + "_deps",
-        target_under_test = ":deps_fixture",
+        tags = [name],
+        target_under_test = "//tests/fixtures/analysis:deps_fixture",
     )
     _dokka_wasm_test(
         name = name + "_wasm",
-        target_under_test = ":wasm_fixture",
+        tags = [name],
+        target_under_test = "//tests/fixtures/analysis:wasm_fixture",
     )
     _dokka_multi_module_test(
         name = name + "_multi_module",
-        target_under_test = ":multi_module_fixture",
+        tags = [name],
+        target_under_test = "//tests/fixtures/analysis:multi_module_fixture",
     )
     _dokka_reusable_config_test(
         name = name + "_reusable_config",
-        target_under_test = ":configured_fixture",
+        tags = [name],
+        target_under_test = "//tests/fixtures/analysis:configured_fixture",
     )
     _invalid_config_test(
         name = name + "_invalid_config",
-        target_under_test = ":invalid_config_fixture",
+        tags = [name],
+        target_under_test = "//tests/fixtures/analysis:invalid_config_fixture",
     )
     _duplicate_module_path_test(
         name = name + "_duplicate_module_path",
-        target_under_test = ":duplicate_aggregate_fixture",
+        tags = [name],
+        target_under_test = "//tests/fixtures/analysis:duplicate_aggregate_fixture",
     )
     _duplicate_module_name_test(
         name = name + "_duplicate_module_name",
-        target_under_test = ":duplicate_module_name_aggregate_fixture",
+        tags = [name],
+        target_under_test = "//tests/fixtures/analysis:duplicate_module_name_aggregate_fixture",
     )
     _invalid_module_path_test(
         name = name + "_invalid_module_path",
-        target_under_test = ":invalid_path_aggregate_fixture",
+        tags = [name],
+        target_under_test = "//tests/fixtures/analysis:invalid_path_aggregate_fixture",
     )
     _reserved_module_path_test(
         name = name + "_reserved_module_path",
-        target_under_test = ":reserved_path_aggregate_fixture",
+        tags = [name],
+        target_under_test = "//tests/fixtures/analysis:reserved_path_aggregate_fixture",
     )
     _non_html_module_test(
         name = name + "_non_html_module",
-        target_under_test = ":non_html_aggregate_fixture",
+        tags = [name],
+        target_under_test = "//tests/fixtures/analysis:non_html_aggregate_fixture",
     )
     native.test_suite(
         name = name,
-        tests = [
-            ":" + name + "_configuration",
-            ":" + name + "_defaults",
-            ":" + name + "_deps",
-            ":" + name + "_duplicate_module_name",
-            ":" + name + "_duplicate_module_path",
-            ":" + name + "_invalid_config",
-            ":" + name + "_invalid_module_path",
-            ":" + name + "_multi_module",
-            ":" + name + "_non_html_module",
-            ":" + name + "_reserved_module_path",
-            ":" + name + "_reusable_config",
-            ":" + name + "_wasm",
-        ],
+        tags = [name],
     )

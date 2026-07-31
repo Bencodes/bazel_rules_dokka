@@ -17,7 +17,7 @@ set -e
 # --- end runfiles.bash initialization v3 ---
 
 docs="$(rlocation "$1")"
-module_path="tests/integration/derived"
+module_path="tests/fixtures/derived_defaults"
 
 test -f "${docs}/index.html" || {
   echo "Missing aggregate index under ${docs}" >&2
@@ -31,7 +31,7 @@ grep -Fq "Derived Module Defaults" "${docs}/index.html" || {
   echo "Aggregate index does not contain its title" >&2
   exit 1
 }
-grep -Fq "derived_docs" "${docs}/index.html" || {
+grep -Fq ">docs</a>" "${docs}/index.html" || {
   echo "Aggregate index does not contain the label-derived module name" >&2
   exit 1
 }
