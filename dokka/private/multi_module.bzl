@@ -3,6 +3,15 @@
 load(":providers.bzl", "DokkaConfigInfo", "DokkaInfo")
 
 _DOKKA_TOOLCHAIN_TYPE = Label("//dokka:toolchain_type")
+_DOKKA_RESERVED_ROOT_ENTRIES = [
+    "images",
+    "index.html",
+    "navigation.html",
+    "package-list",
+    "scripts",
+    "styles",
+    "ui-kit",
+]
 _WINDOWS_INVALID_PATH_CHARACTERS = ["<", ">", ":", "\"", "|", "?", "*"]
 
 def _validate_module_path(module_path, label):
@@ -25,6 +34,15 @@ def _validate_module_path(module_path, label):
                 "Dokka target {} has invalid module_path '{}': expected a portable, " +
                 "relative path without empty, '.' or '..' segments."
             ).format(label, module_path),
+        )
+
+    root_entry = segments[0].lower()
+    if root_entry in _DOKKA_RESERVED_ROOT_ENTRIES:
+        fail(
+            (
+                "Dokka target {} has invalid module_path '{}': first segment '{}' is reserved " +
+                "by Dokka's aggregate output."
+            ).format(label, module_path, segments[0]),
         )
 
 def _dokka_multi_module_impl(ctx):

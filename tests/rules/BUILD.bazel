@@ -108,6 +108,13 @@ dokka(
     tags = ["manual"],
 )
 
+dokka(
+    name = "reserved_module_path_fixture",
+    srcs = ["Fixture.kt"],
+    module_path = "scripts/api",
+    tags = ["manual"],
+)
+
 dokka_multi_module(
     name = "multi_module_fixture",
     config = ":shared_config",
@@ -132,6 +139,12 @@ dokka_multi_module(
 dokka_multi_module(
     name = "invalid_path_aggregate_fixture",
     modules = [":invalid_module_path_fixture"],
+    tags = ["manual"],
+)
+
+dokka_multi_module(
+    name = "reserved_path_aggregate_fixture",
+    modules = [":reserved_module_path_fixture"],
     tags = ["manual"],
 )
 
