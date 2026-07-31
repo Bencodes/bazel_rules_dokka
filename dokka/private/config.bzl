@@ -17,7 +17,7 @@ def _dokka_config_attrs():
         "analysis_platform": attr.string(
             default = "jvm",
             doc = "Platform used for source analysis.",
-            values = ["common", "js", "jvm", "native"],
+            values = ["common", "js", "jvm", "native", "wasm"],
         ),
         "api_version": attr.string(
             doc = "Kotlin API version used for source analysis.",
