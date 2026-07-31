@@ -200,6 +200,22 @@ def _dokka_defaults_test_impl(ctx):
 
     return analysistest.end(env)
 
+def _dokka_wasm_test_impl(ctx):
+    env = analysistest.begin(ctx)
+    write_actions = _actions_with_mnemonic(env, "FileWrite")
+    asserts.equals(env, 2, len(write_actions))
+
+    normal_write = _write_action_for_output(env, "wasm_fixture.dokka.json")
+    if normal_write:
+        configuration = json.decode(normal_write.content)
+        asserts.equals(
+            env,
+            "wasm",
+            configuration["sourceSets"][0]["analysisPlatform"],
+        )
+
+    return analysistest.end(env)
+
 def _dokka_multi_module_test_impl(ctx):
     env = analysistest.begin(ctx)
     target = analysistest.target_under_test(env)
@@ -391,6 +407,7 @@ def _non_html_module_test_impl(ctx):
 
 _dokka_configuration_test = analysistest.make(_dokka_configuration_test_impl)
 _dokka_defaults_test = analysistest.make(_dokka_defaults_test_impl)
+_dokka_wasm_test = analysistest.make(_dokka_wasm_test_impl)
 _dokka_multi_module_test = analysistest.make(_dokka_multi_module_test_impl)
 _dokka_reusable_config_test = analysistest.make(_dokka_reusable_config_test_impl)
 _invalid_config_test = analysistest.make(
@@ -423,6 +440,10 @@ def dokka_analysis_test_suite(name):
     _dokka_defaults_test(
         name = name + "_defaults",
         target_under_test = ":defaults_fixture",
+    )
+    _dokka_wasm_test(
+        name = name + "_wasm",
+        target_under_test = ":wasm_fixture",
     )
     _dokka_multi_module_test(
         name = name + "_multi_module",
@@ -459,5 +480,6 @@ def dokka_analysis_test_suite(name):
             ":" + name + "_multi_module",
             ":" + name + "_non_html_module",
             ":" + name + "_reusable_config",
+            ":" + name + "_wasm",
         ],
     )

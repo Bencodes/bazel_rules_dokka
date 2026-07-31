@@ -65,6 +65,12 @@ dokka_config(
     suppress_obvious_functions = False,
 )
 
+dokka_config(
+    name = "wasm_config",
+    analysis_platform = "wasm",
+    tags = ["manual"],
+)
+
 dokka(
     name = "analysis_fixture",
     srcs = ["Fixture.kt"],
@@ -77,6 +83,13 @@ dokka(
     suppressed_files = ["Suppressed.kt"],
     tags = ["manual"],
     deps = [":dependency"],
+)
+
+dokka(
+    name = "wasm_fixture",
+    srcs = ["Fixture.kt"],
+    config = ":wasm_config",
+    tags = ["manual"],
 )
 
 dokka(
