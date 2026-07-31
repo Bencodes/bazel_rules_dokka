@@ -94,7 +94,8 @@ public final class DokkaGeneratorRunner {
 
     for (JsonNode moduleNode : (ArrayNode) moduleNodes) {
       ObjectNode module = (ObjectNode) moduleNode;
-      Path relativeOutput = Paths.get(requiredText(module, "relativePathToOutputDirectory"));
+      String portableRelativeOutput = requiredText(module, "relativePathToOutputDirectory");
+      Path relativeOutput = Paths.get(portableRelativeOutput);
       if (relativeOutput.isAbsolute()
           || !outputDirectory.resolve(relativeOutput).normalize().startsWith(outputDirectory)) {
         throw new IllegalArgumentException(
@@ -103,7 +104,7 @@ public final class DokkaGeneratorRunner {
       modules.add(
           new DokkaModuleDescriptionImpl(
               requiredText(module, "name"),
-              relativeOutput.toFile(),
+              new PortableModulePath(relativeOutput, portableRelativeOutput),
               files(module.path("includes")),
               absolutePath(requiredText(module, "sourceOutputDirectory")).toFile()));
     }
@@ -192,6 +193,30 @@ public final class DokkaGeneratorRunner {
 
   private static Path absolutePath(String path) {
     return Paths.get(path).toAbsolutePath().normalize();
+  }
+
+  /**
+   * Preserves a URL-compatible module path when Dokka renders aggregate links.
+   *
+   * <p>Dokka 2.2's all-modules-page plugin appends {@code relativePathToOutputDirectory} directly
+   * to a string when it creates module URLs. A regular {@link File} renders that path with
+   * backslashes on Windows. File operations still use the native path stored by {@link File};
+   * only its string representation remains portable.
+   */
+  private static final class PortableModulePath extends File {
+    private static final long serialVersionUID = 1L;
+
+    private final String portablePath;
+
+    PortableModulePath(Path nativePath, String portablePath) {
+      super(nativePath.toString());
+      this.portablePath = portablePath;
+    }
+
+    @Override
+    public String toString() {
+      return portablePath;
+    }
   }
 
   private DokkaGeneratorRunner() {}
