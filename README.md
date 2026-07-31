@@ -163,11 +163,11 @@ portable relative paths and unique within an aggregate. Only HTML `dokka`
 targets can be aggregated.
 
 The aggregate rule uses the same precedence and consumes the selected
-configuration's publication settings:
-`fail_on_warning`, `offline_mode`, `plugins`, `plugins_configuration`,
-`suppress_inherited_members`, and `suppress_obvious_functions`. Source-analysis
-settings in the same configuration continue to apply only to `dokka` targets.
-Root-level Markdown remains target-specific through `includes`.
+configuration's `offline_mode`, `plugins`, and `plugins_configuration` settings.
+Source-generation settings such as `fail_on_warning`,
+`suppress_inherited_members`, and `suppress_obvious_functions` apply to the
+individual `dokka` module targets instead. Root-level Markdown remains
+target-specific through `includes`.
 
 ### Common options
 

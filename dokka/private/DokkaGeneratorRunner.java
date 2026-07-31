@@ -122,6 +122,7 @@ public final class DokkaGeneratorRunner {
       }
     }
 
+    // AllModulesPageGeneration ignores the single-module warning and suppression settings.
     return new DokkaConfigurationImpl(
         requiredText(root, "moduleName"),
         optionalText(root, "moduleVersion"),
@@ -132,11 +133,11 @@ public final class DokkaGeneratorRunner {
         new ArrayList<>(files(root.path("pluginsClasspath"))),
         pluginConfigurations,
         modules,
-        root.path("failOnWarning").asBoolean(),
         false,
-        root.path("suppressObviousFunctions").asBoolean(true),
+        false,
+        true,
         files(root.path("includes")),
-        root.path("suppressInheritedMembers").asBoolean(),
+        false,
         root.path("finalizeCoroutines").asBoolean(true));
   }
 

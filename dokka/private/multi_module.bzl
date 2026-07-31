@@ -94,7 +94,6 @@ def _dokka_multi_module_impl(ctx):
         output = configuration,
         content = json.encode({
             "delayTemplateSubstitution": False,
-            "failOnWarning": settings.fail_on_warning,
             "finalizeCoroutines": True,
             "includes": [include.path for include in ctx.files.includes],
             "moduleName": ctx.attr.title or ctx.label.name,
@@ -115,8 +114,6 @@ def _dokka_multi_module_impl(ctx):
             ],
             "runnerMode": "rules_dokka_multi_module",
             "sourceSets": [],
-            "suppressInheritedMembers": settings.suppress_inherited_members,
-            "suppressObviousFunctions": settings.suppress_obvious_functions,
         }),
     )
 

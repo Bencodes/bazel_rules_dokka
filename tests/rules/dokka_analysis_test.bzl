@@ -225,10 +225,10 @@ def _dokka_multi_module_test_impl(ctx):
         asserts.equals(env, "rules_dokka_multi_module", configuration["runnerMode"])
         asserts.equals(env, False, configuration["delayTemplateSubstitution"])
         asserts.equals(env, True, configuration["finalizeCoroutines"])
-        asserts.equals(env, True, configuration["failOnWarning"])
         asserts.equals(env, False, configuration["offlineMode"])
-        asserts.equals(env, False, configuration["suppressObviousFunctions"])
-        asserts.equals(env, True, configuration["suppressInheritedMembers"])
+        asserts.false(env, "failOnWarning" in configuration)
+        asserts.false(env, "suppressInheritedMembers" in configuration)
+        asserts.false(env, "suppressObviousFunctions" in configuration)
         asserts.equals(env, [], configuration["sourceSets"])
         asserts.equals(
             env,
