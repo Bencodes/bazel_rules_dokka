@@ -1,10 +1,10 @@
 """Dokka toolchain implementation."""
 
-load("@rules_java//java:defs.bzl", "java_binary")
 load("@rules_java//java/common:java_info.bzl", "JavaInfo")
+load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_binary")
 load(":providers.bzl", "DokkaConfigInfo", "DokkaToolchainInfo")
 
-_GENERATOR_RUNNER_SOURCE = Label("//dokka/private:DokkaGeneratorRunner.java")
+_GENERATOR_RUNNER_SOURCE = Label("//dokka/private:DokkaGeneratorRunner.kt")
 
 def _runtime_jars(targets):
     return depset(
@@ -74,7 +74,7 @@ def dokka_generator(name, dokka_cli, jackson_databind, visibility = None):
         jackson_databind: Java target for Jackson databind.
         visibility: Visibility of the generator target.
     """
-    java_binary(
+    kt_jvm_binary(
         name = name,
         srcs = [_GENERATOR_RUNNER_SOURCE],
         main_class = "rules.dokka.DokkaGeneratorRunner",
