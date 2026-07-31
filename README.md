@@ -1,4 +1,4 @@
-# bazel_rules_dokka
+# rules_dokka
 
 Bzlmod-first Bazel rules for generating Kotlin and Java API documentation with
 [Dokka](https://kotlinlang.org/docs/dokka-introduction.html).
