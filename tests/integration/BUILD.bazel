@@ -1,3 +1,5 @@
+load("@bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
+load("@bazel_lib//lib:diff_test.bzl", "diff_test")
 load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//dokka:defs.bzl", "dokka", "dokka_config", "dokka_multi_module")
 
@@ -22,6 +24,36 @@ dokka(
     config = ":integration_config",
     format = "gfm",
     module_name = "Example API",
+)
+
+copy_to_directory(
+    name = "actual_gfm_markdown",
+    srcs = [":gfm_docs"],
+    include_srcs_patterns = [
+        "*.md",
+        "**/*.md",
+    ],
+    replace_prefixes = {
+        "-example -a-p-i": "example-api",
+        "-example -a-p-i/com.example/-bar": "example-api/com.example/bar",
+        "-example -a-p-i/com.example/-bar/-bar.md": "example-api/com.example/bar/bar.md",
+        "-example -a-p-i/com.example/-foo": "example-api/com.example/foo",
+        "-example -a-p-i/com.example/-foo/-foo.md": "example-api/com.example/foo/foo.md",
+    },
+    root_paths = ["tests/integration/gfm_docs"],
+)
+
+copy_to_directory(
+    name = "expected_gfm_markdown",
+    srcs = glob(["fixtures/gfm_docs/**/*.md"]),
+    root_paths = ["tests/integration/fixtures/gfm_docs"],
+)
+
+diff_test(
+    name = "gfm_docs_diff_test",
+    failure_message = "Generated GFM documentation differs from its checked-in fixtures.",
+    file1 = ":expected_gfm_markdown",
+    file2 = ":actual_gfm_markdown",
 )
 
 dokka(
@@ -127,6 +159,7 @@ test_suite(
         ":configured_publication_docs_test",
         ":derived_module_defaults_test",
         ":generated_docs_test",
+        ":gfm_docs_diff_test",
         ":multi_module_docs_test",
     ],
 )
