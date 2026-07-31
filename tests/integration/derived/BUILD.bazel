@@ -1,7 +1,0 @@
-load("//dokka:defs.bzl", "dokka")
-
-dokka(
-    name = "derived_docs",
-    srcs = ["Derived.kt"],
-    visibility = ["//tests/integration:__pkg__"],
-)

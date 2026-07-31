@@ -1,0 +1,83 @@
+load("@bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
+load("//dokka:defs.bzl", "dokka", "dokka_config")
+load("//tests/fixtures:common.bzl", "FIXTURE_TAGS")
+
+package(default_visibility = ["//tests:__subpackages__"])
+
+dokka_config(
+    name = "config",
+    no_jdk_link = True,
+    no_stdlib_link = True,
+    tags = FIXTURE_TAGS,
+)
+
+dokka_config(
+    name = "publication_config",
+    plugins_configuration = {
+        "org.jetbrains.dokka.base.DokkaBase": "{\"footerMessage\":\"rules_dokka aggregate footer\"}",
+    },
+    suppress_inherited_members = True,
+    suppress_obvious_functions = False,
+    tags = FIXTURE_TAGS,
+)
+
+dokka(
+    name = "gfm_docs",
+    srcs = [
+        "Bar.kt",
+        "Main.kt",
+    ],
+    config = ":config",
+    format = "gfm",
+    module_name = "Example API",
+    tags = FIXTURE_TAGS,
+)
+
+dokka(
+    name = "html_docs",
+    srcs = [
+        "Bar.kt",
+        "Main.kt",
+    ],
+    config = ":config",
+    format = "html",
+    module_name = "Example API",
+    tags = FIXTURE_TAGS,
+)
+
+dokka(
+    name = "javadoc_docs",
+    srcs = [
+        "Bar.kt",
+        "Main.kt",
+    ],
+    config = ":config",
+    format = "javadoc",
+    module_name = "Example API",
+    tags = FIXTURE_TAGS,
+)
+
+dokka(
+    name = "api_docs",
+    srcs = ["Main.kt"],
+    config = ":config",
+    module_name = "API",
+    module_path = "api",
+    tags = FIXTURE_TAGS,
+)
+
+dokka(
+    name = "data_docs",
+    srcs = ["Bar.kt"],
+    config = ":config",
+    module_name = "Data",
+    module_path = "data",
+    tags = FIXTURE_TAGS,
+)
+
+copy_to_directory(
+    name = "expected_gfm_markdown",
+    srcs = glob(["expected/gfm_docs/**/*.md"]),
+    root_paths = ["tests/fixtures/generated_docs/expected/gfm_docs"],
+    tags = FIXTURE_TAGS,
+)

@@ -1,0 +1,10 @@
+load("//dokka:defs.bzl", "dokka")
+load("//tests/fixtures:common.bzl", "FIXTURE_TAGS")
+
+package(default_visibility = ["//tests:__subpackages__"])
+
+dokka(
+    name = "docs",
+    srcs = ["Derived.kt"],
+    tags = FIXTURE_TAGS,
+)

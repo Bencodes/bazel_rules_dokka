@@ -1,7 +1,11 @@
-test_suite(
-    name = "tests",
-    tests = [
-        "//tests/integration:tests",
-        "//tests/rules:tests",
-    ],
-)
+load(":dokka_tests.bzl", "dokka_test_suite")
+load(":generated_docs_tests.bzl", "generated_docs_test_suite")
+load(":multi_module_tests.bzl", "multi_module_test_suite")
+
+dokka_test_suite(name = "dokka")
+
+generated_docs_test_suite(name = "generated_docs")
+
+multi_module_test_suite(name = "multi_module")
+
+test_suite(name = "all_tests")
