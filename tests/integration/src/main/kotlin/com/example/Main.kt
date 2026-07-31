@@ -1,24 +1,7 @@
 package com.example
 
-fun main(args: Array<String>) {
-}
-
+/** The public entry point for the example API. */
 class Foo {
-    /**
-    * Foo function
-    */
-    fun foo(): Unit { }
-    
-    /**
-    * Private function
-    */
-    private fun isFoo() = false
-
-    companion object {
-
-        /**
-        * Provides an instance of foo
-        */
-        fun bar() = Foo()
-    }
+    /** Returns a documented value. */
+    fun value(): String = "value"
 }

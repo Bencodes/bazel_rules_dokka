@@ -1,0 +1,161 @@
+load("@rules_java//java:defs.bzl", "java_library")
+load("//dokka:defs.bzl", "dokka", "dokka_config", "dokka_multi_module")
+load(":dokka_analysis_test.bzl", "dokka_analysis_test_suite")
+
+java_library(
+    name = "dependency",
+    srcs = ["Dependency.java"],
+    neverlink = True,
+)
+
+java_library(
+    name = "custom_plugin",
+    srcs = ["CustomPlugin.java"],
+)
+
+dokka_config(
+    name = "analysis_config",
+    api_version = "2.1",
+    documented_visibilities = [
+        "PUBLIC",
+        "INTERNAL",
+    ],
+    fail_on_warning = True,
+    jdk_version = 17,
+    language_version = "2.1",
+    no_jdk_link = True,
+    no_stdlib_link = True,
+    offline_mode = False,
+    plugins = [":custom_plugin"],
+    plugins_configuration = {
+        "org.jetbrains.dokka.base.DokkaBase": "{\"footerMessage\":\"rules_dokka\"}",
+    },
+    report_undocumented = True,
+    skip_empty_packages = True,
+    source_set_display_name = "Fixture JVM",
+    source_set_name = "fixtureMain",
+    suppress_annotated_with = ["com.example.InternalApi"],
+    suppress_inherited_members = True,
+    suppress_obvious_functions = False,
+)
+
+dokka_config(
+    name = "shared_config",
+    api_version = "2.0",
+    documented_visibilities = [
+        "PUBLIC",
+        "PROTECTED",
+    ],
+    fail_on_warning = True,
+    jdk_version = 17,
+    language_version = "2.0",
+    no_jdk_link = True,
+    no_stdlib_link = True,
+    offline_mode = False,
+    plugins = [":custom_plugin"],
+    plugins_configuration = {
+        "org.jetbrains.dokka.base.DokkaBase": "{\"footerMessage\":\"shared config\"}",
+    },
+    report_undocumented = True,
+    skip_deprecated = True,
+    source_set_display_name = "Configured JVM",
+    source_set_name = "configuredMain",
+    suppress_annotated_with = ["com.example.ExperimentalApi"],
+    suppress_inherited_members = True,
+    suppress_obvious_functions = False,
+)
+
+dokka(
+    name = "analysis_fixture",
+    srcs = ["Fixture.kt"],
+    config = ":analysis_config",
+    format = "gfm",
+    includes = ["module.md"],
+    module_name = "fixture-module",
+    module_version = "1.2.3",
+    samples = ["Sample.kt"],
+    suppressed_files = ["Suppressed.kt"],
+    tags = ["manual"],
+    deps = [":dependency"],
+)
+
+dokka(
+    name = "defaults_fixture",
+    srcs = ["Fixture.kt"],
+    tags = ["manual"],
+)
+
+dokka(
+    name = "module_api_fixture",
+    srcs = ["Fixture.kt"],
+    includes = ["module.md"],
+    module_name = "API",
+    module_path = "api",
+    tags = ["manual"],
+)
+
+dokka(
+    name = "duplicate_module_path_fixture",
+    srcs = ["Fixture.kt"],
+    module_path = "api",
+    tags = ["manual"],
+)
+
+dokka(
+    name = "invalid_module_path_fixture",
+    srcs = ["Fixture.kt"],
+    module_path = "../invalid",
+    tags = ["manual"],
+)
+
+dokka_multi_module(
+    name = "multi_module_fixture",
+    config = ":shared_config",
+    includes = ["module.md"],
+    modules = [
+        "//tests/rules/nested:docs",
+        ":module_api_fixture",
+    ],
+    tags = ["manual"],
+    title = "Project API Reference",
+)
+
+dokka_multi_module(
+    name = "duplicate_aggregate_fixture",
+    modules = [
+        ":module_api_fixture",
+        ":duplicate_module_path_fixture",
+    ],
+    tags = ["manual"],
+)
+
+dokka_multi_module(
+    name = "invalid_path_aggregate_fixture",
+    modules = [":invalid_module_path_fixture"],
+    tags = ["manual"],
+)
+
+dokka_multi_module(
+    name = "non_html_aggregate_fixture",
+    modules = [":analysis_fixture"],
+    tags = ["manual"],
+)
+
+dokka(
+    name = "configured_fixture",
+    srcs = ["Fixture.kt"],
+    config = ":shared_config",
+    format = "javadoc",
+    includes = ["module.md"],
+    module_name = "configured-module",
+    module_version = "4.5.6",
+    tags = ["manual"],
+)
+
+dokka_config(
+    name = "invalid_config_fixture",
+    documented_visibilities = ["public"],
+    tags = ["manual"],
+)
+
+dokka_analysis_test_suite(name = "tests")

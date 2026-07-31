@@ -1,0 +1,39 @@
+module(
+    name = "rules_dokka",
+    version = "0.0.0",
+    bazel_compatibility = [">=8.4.2"],
+)
+
+bazel_dep(name = "rules_java", version = "9.3.0")
+bazel_dep(name = "rules_jvm_external", version = "7.1")
+
+bazel_dep(name = "bazel_skylib", version = "1.9.0", dev_dependency = True)
+bazel_dep(name = "buildifier_prebuilt", version = "8.2.1.2", dev_dependency = True)
+bazel_dep(name = "rules_shell", version = "0.6.1", dev_dependency = True)
+
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven.install(
+    name = "rules_dokka_dependencies",
+    artifacts = [
+        "com.soywiz.korlibs.korte:korte-jvm:3.3.0",
+        "org.freemarker:freemarker:2.3.31",
+        "org.jetbrains.dokka:all-modules-page-plugin:2.2.0",
+        "org.jetbrains.dokka:analysis-kotlin-symbols:2.2.0",
+        "org.jetbrains.dokka:dokka-base:2.2.0",
+        "org.jetbrains.dokka:dokka-cli:2.2.0",
+        "org.jetbrains.dokka:gfm-plugin:2.2.0",
+        "org.jetbrains.dokka:javadoc-plugin:2.2.0",
+        "org.jetbrains.dokka:kotlin-as-java-plugin:2.2.0",
+        "org.jetbrains.kotlinx:kotlinx-html-jvm:0.8.0",
+    ],
+    fail_if_repin_required = True,
+    lock_file = "//:maven_install.json",
+    repositories = ["https://repo1.maven.org/maven2"],
+)
+use_repo(
+    maven,
+    "rules_dokka_dependencies",
+    "unpinned_rules_dokka_dependencies",
+)
+
+register_toolchains("//dokka:default_toolchain")

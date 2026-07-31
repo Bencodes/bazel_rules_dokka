@@ -1,0 +1,6 @@
+load("@rules_dokka//dokka:defs.bzl", "dokka")
+
+dokka(
+    name = "docs",
+    srcs = ["Example.kt"],
+)

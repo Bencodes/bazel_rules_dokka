@@ -1,0 +1,132 @@
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
+load("//dokka:defs.bzl", "dokka", "dokka_config", "dokka_multi_module")
+
+dokka_config(
+    name = "integration_config",
+    no_jdk_link = True,
+    no_stdlib_link = True,
+)
+
+dokka_config(
+    name = "publication_config",
+    plugins_configuration = {
+        "org.jetbrains.dokka.base.DokkaBase": "{\"footerMessage\":\"rules_dokka aggregate footer\"}",
+    },
+    suppress_inherited_members = True,
+    suppress_obvious_functions = False,
+)
+
+dokka(
+    name = "gfm_docs",
+    srcs = glob(["src/main/kotlin/**/*.kt"]),
+    config = ":integration_config",
+    format = "gfm",
+    module_name = "Example API",
+)
+
+dokka(
+    name = "html_docs",
+    srcs = glob(["src/main/kotlin/**/*.kt"]),
+    config = ":integration_config",
+    format = "html",
+    module_name = "Example API",
+)
+
+dokka(
+    name = "javadoc_docs",
+    srcs = glob(["src/main/kotlin/**/*.kt"]),
+    config = ":integration_config",
+    format = "javadoc",
+    module_name = "Example API",
+)
+
+dokka(
+    name = "api_docs",
+    srcs = ["src/main/kotlin/com/example/Main.kt"],
+    config = ":integration_config",
+    module_name = "API",
+    module_path = "api",
+)
+
+dokka(
+    name = "data_docs",
+    srcs = ["src/main/kotlin/com/example/Bar.kt"],
+    config = ":integration_config",
+    module_name = "Data",
+    module_path = "data",
+)
+
+dokka_multi_module(
+    name = "docs",
+    modules = [
+        ":api_docs",
+        ":data_docs",
+    ],
+    title = "Project API Reference",
+)
+
+dokka_multi_module(
+    name = "configured_docs",
+    config = ":publication_config",
+    modules = [
+        ":api_docs",
+        ":data_docs",
+    ],
+    title = "Configured Project API Reference",
+)
+
+dokka_multi_module(
+    name = "derived_defaults_docs",
+    modules = ["//tests/integration/derived:derived_docs"],
+    title = "Derived Module Defaults",
+)
+
+sh_test(
+    name = "generated_docs_test",
+    srcs = ["generated_docs_test.sh"],
+    args = [
+        "$(rlocationpath :gfm_docs)",
+        "$(rlocationpath :html_docs)",
+        "$(rlocationpath :javadoc_docs)",
+    ],
+    data = [
+        ":gfm_docs",
+        ":html_docs",
+        ":javadoc_docs",
+    ],
+    deps = ["@bazel_tools//tools/bash/runfiles"],
+)
+
+sh_test(
+    name = "multi_module_docs_test",
+    srcs = ["multi_module_docs_test.sh"],
+    args = ["$(rlocationpath :docs)"],
+    data = [":docs"],
+    deps = ["@bazel_tools//tools/bash/runfiles"],
+)
+
+sh_test(
+    name = "configured_publication_docs_test",
+    srcs = ["configured_publication_docs_test.sh"],
+    args = ["$(rlocationpath :configured_docs)"],
+    data = [":configured_docs"],
+    deps = ["@bazel_tools//tools/bash/runfiles"],
+)
+
+sh_test(
+    name = "derived_module_defaults_test",
+    srcs = ["derived_module_defaults_test.sh"],
+    args = ["$(rlocationpath :derived_defaults_docs)"],
+    data = [":derived_defaults_docs"],
+    deps = ["@bazel_tools//tools/bash/runfiles"],
+)
+
+test_suite(
+    name = "tests",
+    tests = [
+        ":configured_publication_docs_test",
+        ":derived_module_defaults_test",
+        ":generated_docs_test",
+        ":multi_module_docs_test",
+    ],
+)

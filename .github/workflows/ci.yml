@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  buildifier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-cache: true
+          repository-cache: true
+      - run: bazel run //:buildifier.check
+
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+          - windows-latest
+        bazel_version:
+          - "8.4.2"
+          - "9.x"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-cache: true
+          repository-cache: true
+      - name: Test
+        env:
+          USE_BAZEL_VERSION: ${{ matrix.bazel_version }}
+        run: bazel test //...
+      - name: Verify the Bzlmod lock file
+        if: always() && matrix.bazel_version == '9.x'
+        shell: bash
+        run: |
+          if [[ -n "$(git status --porcelain -- MODULE.bazel.lock)" ]]; then
+            git diff -- MODULE.bazel.lock
+            echo "::error file=MODULE.bazel.lock::MODULE.bazel.lock changed during CI."
+            exit 1
+          fi
+
+  consumer:
+    strategy:
+      matrix:
+        bazel_version:
+          - "8.4.2"
+          - "9.x"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: bazel-contrib/setup-bazel@0.19.0
+        with:
+          bazelisk-cache: true
+          repository-cache: true
+      - name: Build from an external Bzlmod consumer
+        env:
+          USE_BAZEL_VERSION: ${{ matrix.bazel_version }}
+        working-directory: e2e/smoke
+        run: bazel build //:docs

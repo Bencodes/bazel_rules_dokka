@@ -1,0 +1,14 @@
+bcr_test_module:
+  module_path: "e2e/smoke"
+
+  matrix:
+    platform: ["macos_arm64", "ubuntu2004", "windows"]
+    bazel: ["8.x", "9.x"]
+
+  tasks:
+    verify_targets:
+      name: "Verify consumer targets"
+      platform: ${{ platform }}
+      bazel: ${{ bazel }}
+      build_targets:
+        - "//..."

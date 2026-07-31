@@ -1,0 +1,6 @@
+package(default_visibility = ["//dokka:__subpackages__"])
+
+exports_files(
+    ["DokkaGeneratorRunner.java"],
+    visibility = ["//visibility:public"],
+)
