@@ -1,15 +1,15 @@
-load("@rules_java//java:defs.bzl", "java_binary")
+load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_binary")
 
 package(default_visibility = ["//dokka:__subpackages__"])
 
 exports_files(
-    ["DokkaGeneratorRunner.java"],
+    ["DokkaGeneratorRunner.kt"],
     visibility = ["//visibility:public"],
 )
 
-java_binary(
+kt_jvm_binary(
     name = "dokka_generator",
-    srcs = ["DokkaGeneratorRunner.java"],
+    srcs = ["DokkaGeneratorRunner.kt"],
     main_class = "rules.dokka.DokkaGeneratorRunner",
     visibility = ["//dokka:__pkg__"],
     deps = [

@@ -68,7 +68,7 @@ def _dokka_configuration_test_impl(ctx):
         )
         asserts.true(
             env,
-            _contains_fragment(configuration["pluginsClasspath"], "libcustom_plugin.jar"),
+            _contains_fragment(configuration["pluginsClasspath"], "custom_plugin.jar"),
         )
         asserts.false(
             env,
@@ -100,7 +100,7 @@ def _dokka_configuration_test_impl(ctx):
         asserts.true(env, _contains_fragment(source_set["includes"], "module.md"))
         asserts.true(env, _contains_fragment(source_set["samples"], "Sample.kt"))
         asserts.true(env, _contains_fragment(source_set["suppressedFiles"], "Suppressed.kt"))
-        asserts.true(env, _contains_fragment(source_set["classpath"], "libdependency"))
+        asserts.true(env, _contains_fragment(source_set["classpath"], "dependency.abi.jar"))
 
     dokka_actions = _actions_with_mnemonic(env, "Dokka")
     asserts.equals(env, 1, len(dokka_actions))
@@ -117,11 +117,11 @@ def _dokka_configuration_test_impl(ctx):
             "Sample.kt",
             "Suppressed.kt",
             "analysis_fixture.dokka.json",
-            "libcustom_plugin.jar",
+            "custom_plugin.jar",
             "module.md",
         ]:
             asserts.true(env, expected_input in input_basenames)
-        asserts.true(env, _contains_fragment(input_basenames, "libdependency"))
+        asserts.true(env, "dependency.abi.jar" in input_basenames)
 
     return analysistest.end(env)
 
@@ -255,7 +255,7 @@ def _dokka_multi_module_test_impl(ctx):
             )
         asserts.true(
             env,
-            _contains_fragment(configuration["pluginsClasspath"], "libcustom_plugin.jar"),
+            _contains_fragment(configuration["pluginsClasspath"], "custom_plugin.jar"),
         )
 
         modules = configuration["modules"]
@@ -331,7 +331,7 @@ def _dokka_reusable_config_test_impl(ctx):
         )
         asserts.true(
             env,
-            _contains_fragment(configuration["pluginsClasspath"], "libcustom_plugin.jar"),
+            _contains_fragment(configuration["pluginsClasspath"], "custom_plugin.jar"),
         )
         asserts.false(
             env,
@@ -364,7 +364,7 @@ def _dokka_reusable_config_test_impl(ctx):
     asserts.equals(env, 1, len(dokka_actions))
     if dokka_actions:
         input_basenames = [file.basename for file in dokka_actions[0].inputs.to_list()]
-        asserts.true(env, "libcustom_plugin.jar" in input_basenames)
+        asserts.true(env, "custom_plugin.jar" in input_basenames)
 
     asserts.equals(env, "javadoc", target[DokkaInfo].format)
     return analysistest.end(env)

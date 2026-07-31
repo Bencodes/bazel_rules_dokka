@@ -1,16 +1,16 @@
-load("@rules_java//java:defs.bzl", "java_library")
+load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
 load("//dokka:defs.bzl", "dokka", "dokka_config", "dokka_multi_module")
 load(":dokka_analysis_test.bzl", "dokka_analysis_test_suite")
 
-java_library(
+kt_jvm_library(
     name = "dependency",
-    srcs = ["Dependency.java"],
+    srcs = ["Dependency.kt"],
     neverlink = True,
 )
 
-java_library(
+kt_jvm_library(
     name = "custom_plugin",
-    srcs = ["CustomPlugin.java"],
+    srcs = ["CustomPlugin.kt"],
 )
 
 dokka_config(
