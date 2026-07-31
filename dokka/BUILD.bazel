@@ -1,4 +1,4 @@
-load("//dokka:defs.bzl", "dokka_config", "dokka_generator", "dokka_toolchain")
+load("//dokka:defs.bzl", "dokka_config", "dokka_toolchain")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -8,16 +8,10 @@ dokka_config(
     name = "default_config",
 )
 
-dokka_generator(
-    name = "dokka_generator",
-    dokka_cli = "@rules_dokka_dependencies//:org_jetbrains_dokka_dokka_cli",
-    jackson_databind = "@rules_dokka_dependencies//:com_fasterxml_jackson_core_jackson_databind",
-)
-
 dokka_toolchain(
     name = "default_toolchain",
     default_config = ":default_config",
-    generator = ":dokka_generator",
+    generator = "//dokka/private:dokka_generator",
     gfm_plugins = [
         "@rules_dokka_dependencies//:org_freemarker_freemarker",
         "@rules_dokka_dependencies//:org_jetbrains_dokka_analysis_kotlin_symbols",

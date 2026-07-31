@@ -71,9 +71,7 @@ def _dokka_multi_module_impl(ctx):
 
     toolchain = ctx.toolchains[_DOKKA_TOOLCHAIN_TYPE].dokka
     config = (
-        ctx.attr.config[DokkaConfigInfo]
-        if ctx.attr.config
-        else toolchain.default_config
+        ctx.attr.config[DokkaConfigInfo] if ctx.attr.config else toolchain.default_config
     )
     settings = config.settings
     if not toolchain.multi_module_plugins.to_list():

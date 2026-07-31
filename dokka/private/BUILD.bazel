@@ -1,6 +1,19 @@
+load("@rules_java//java:defs.bzl", "java_binary")
+
 package(default_visibility = ["//dokka:__subpackages__"])
 
 exports_files(
     ["DokkaGeneratorRunner.java"],
     visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "dokka_generator",
+    srcs = ["DokkaGeneratorRunner.java"],
+    main_class = "rules.dokka.DokkaGeneratorRunner",
+    visibility = ["//dokka:__pkg__"],
+    deps = [
+        "@rules_dokka_dependencies//:com_fasterxml_jackson_core_jackson_databind",
+        "@rules_dokka_dependencies//:org_jetbrains_dokka_dokka_cli",
+    ],
 )
