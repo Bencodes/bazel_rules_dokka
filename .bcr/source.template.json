@@ -1,5 +1,5 @@
 {
   "integrity": "**leave this alone**",
   "strip_prefix": "bazel_rules_dokka-{VERSION}",
-  "url": "https://github.com/{OWNER}/{REPO}/releases/download/{TAG}/bazel_rules_dokka-{TAG}.tar.gz"
+  "url": "https://github.com/{OWNER}/{REPO}/archive/refs/tags/{TAG}.tar.gz"
 }
