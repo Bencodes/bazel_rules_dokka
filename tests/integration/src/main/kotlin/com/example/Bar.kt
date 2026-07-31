@@ -1,10 +1,8 @@
 package com.example
 
+/** A second documented type. */
 class Bar {
-    
-    /**
-    * Deprecated function
-    */
-    @Deprecated
-    fun bar() = Unit
+    /** A deprecated function retained in the default documentation. */
+    @Deprecated("Use Foo.value instead")
+    fun value() = Unit
 }

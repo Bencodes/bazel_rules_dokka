@@ -1,0 +1,26 @@
+load("@buildifier_prebuilt//:rules.bzl", "buildifier")
+
+exports_files([
+    ".bazelversion",
+    "maven_install.json",
+])
+
+buildifier(
+    name = "buildifier.check",
+    exclude_patterns = [
+        "./.git/*",
+        "./bazel-*/*",
+    ],
+    lint_mode = "warn",
+    mode = "diff",
+)
+
+buildifier(
+    name = "buildifier.fix",
+    disabled_rewrites = ["label"],
+    exclude_patterns = [
+        "./.git/*",
+        "./bazel-*/*",
+    ],
+    lint_mode = "fix",
+)
