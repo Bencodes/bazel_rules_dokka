@@ -1,0 +1,48 @@
+load("@bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
+load("@bazel_lib//lib:diff_test.bzl", "diff_test")
+load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
+load("//dokka:defs.bzl", "dokka", "dokka_config")
+
+kt_jvm_library(
+    name = "dependency",
+    srcs = ["Dependency.kt"],
+    neverlink = True,
+)
+
+dokka_config(
+    name = "config",
+    no_jdk_link = True,
+    no_stdlib_link = True,
+)
+
+dokka(
+    name = "docs",
+    srcs = ["UsesDependency.kt"],
+    config = ":config",
+    format = "gfm",
+    module_name = "Dependency API",
+    deps = [":dependency"],
+)
+
+copy_to_directory(
+    name = "actual_markdown",
+    srcs = [":docs"],
+    include_srcs_patterns = ["**/-uses-dependency/index.md"],
+    replace_prefixes = {
+        "-dependency -a-p-i/com.example/-uses-dependency": "uses-dependency",
+    },
+    root_paths = ["tests/integration/deps/docs"],
+)
+
+copy_to_directory(
+    name = "expected_markdown",
+    srcs = glob(["fixtures/**/*.md"]),
+    root_paths = ["tests/integration/deps/fixtures"],
+)
+
+diff_test(
+    name = "deps_diff_test",
+    failure_message = "Dokka did not resolve the API exposed by its compiled dependency.",
+    file1 = ":expected_markdown",
+    file2 = ":actual_markdown",
+)
