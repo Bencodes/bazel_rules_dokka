@@ -384,6 +384,11 @@ def _invalid_module_path_test_impl(ctx):
     asserts.expect_failure(env, "has invalid module_path '../invalid'")
     return analysistest.end(env)
 
+def _reserved_module_path_test_impl(ctx):
+    env = analysistest.begin(ctx)
+    asserts.expect_failure(env, "first segment 'scripts' is reserved")
+    return analysistest.end(env)
+
 def _non_html_module_test_impl(ctx):
     env = analysistest.begin(ctx)
     asserts.expect_failure(env, "only accepts HTML `dokka` targets")
@@ -403,6 +408,10 @@ _duplicate_module_path_test = analysistest.make(
 )
 _invalid_module_path_test = analysistest.make(
     _invalid_module_path_test_impl,
+    expect_failure = True,
+)
+_reserved_module_path_test = analysistest.make(
+    _reserved_module_path_test_impl,
     expect_failure = True,
 )
 _non_html_module_test = analysistest.make(
@@ -444,6 +453,10 @@ def dokka_analysis_test_suite(name):
         name = name + "_invalid_module_path",
         target_under_test = ":invalid_path_aggregate_fixture",
     )
+    _reserved_module_path_test(
+        name = name + "_reserved_module_path",
+        target_under_test = ":reserved_path_aggregate_fixture",
+    )
     _non_html_module_test(
         name = name + "_non_html_module",
         target_under_test = ":non_html_aggregate_fixture",
@@ -458,6 +471,7 @@ def dokka_analysis_test_suite(name):
             ":" + name + "_invalid_module_path",
             ":" + name + "_multi_module",
             ":" + name + "_non_html_module",
+            ":" + name + "_reserved_module_path",
             ":" + name + "_reusable_config",
         ],
     )

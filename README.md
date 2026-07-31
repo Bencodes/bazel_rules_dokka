@@ -159,8 +159,8 @@ Both module attributes are optional. `module_name` defaults to the target name.
 `module_path` defaults to the target's full Bazel package path, preserving
 nested project structure; a target in the root package falls back to its target
 name. Use either attribute to override its derived value. Module paths must be
-portable relative paths and unique within an aggregate. Only HTML `dokka`
-targets can be aggregated.
+portable relative paths, unique within an aggregate, and must not collide with
+Dokka's root assets or index files. Only HTML `dokka` targets can be aggregated.
 
 The aggregate rule uses the same precedence and consumes the selected
 configuration's `offline_mode`, `plugins`, and `plugins_configuration` settings.
