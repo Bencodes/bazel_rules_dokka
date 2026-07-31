@@ -379,6 +379,11 @@ def _duplicate_module_path_test_impl(ctx):
     asserts.expect_failure(env, "both resolve to module path 'api'")
     return analysistest.end(env)
 
+def _duplicate_module_name_test_impl(ctx):
+    env = analysistest.begin(ctx)
+    asserts.expect_failure(env, "both resolve to module name 'docs'")
+    return analysistest.end(env)
+
 def _invalid_module_path_test_impl(ctx):
     env = analysistest.begin(ctx)
     asserts.expect_failure(env, "has invalid module_path '../invalid'")
@@ -399,6 +404,10 @@ _invalid_config_test = analysistest.make(
 )
 _duplicate_module_path_test = analysistest.make(
     _duplicate_module_path_test_impl,
+    expect_failure = True,
+)
+_duplicate_module_name_test = analysistest.make(
+    _duplicate_module_name_test_impl,
     expect_failure = True,
 )
 _invalid_module_path_test = analysistest.make(
@@ -440,6 +449,10 @@ def dokka_analysis_test_suite(name):
         name = name + "_duplicate_module_path",
         target_under_test = ":duplicate_aggregate_fixture",
     )
+    _duplicate_module_name_test(
+        name = name + "_duplicate_module_name",
+        target_under_test = ":duplicate_module_name_aggregate_fixture",
+    )
     _invalid_module_path_test(
         name = name + "_invalid_module_path",
         target_under_test = ":invalid_path_aggregate_fixture",
@@ -453,6 +466,7 @@ def dokka_analysis_test_suite(name):
         tests = [
             ":" + name + "_configuration",
             ":" + name + "_defaults",
+            ":" + name + "_duplicate_module_name",
             ":" + name + "_duplicate_module_path",
             ":" + name + "_invalid_config",
             ":" + name + "_invalid_module_path",

@@ -29,6 +29,7 @@ def _validate_module_path(module_path, label):
 
 def _dokka_multi_module_impl(ctx):
     modules = []
+    module_names = {}
     module_paths = {}
     module_outputs = []
     module_includes = []
@@ -42,6 +43,17 @@ def _dokka_multi_module_impl(ctx):
                     module.format,
                 ),
             )
+
+        module_name = module.module_name
+        if module_name in module_names:
+            fail(
+                "Dokka targets {} and {} both resolve to module name '{}'; set unique module_name values.".format(
+                    module_names[module_name],
+                    target.label,
+                    module_name,
+                ),
+            )
+        module_names[module_name] = target.label
 
         module_path = module.module_path
         _validate_module_path(module_path, target.label)
@@ -62,7 +74,7 @@ def _dokka_multi_module_impl(ctx):
         # that version-matched contract end to end.
         modules.append({
             "includes": [include.path for include in includes],
-            "name": module.module_name,
+            "name": module_name,
             "relativePathToOutputDirectory": module_path,
             "sourceOutputDirectory": module.partial_documentation.path,
         })
