@@ -56,6 +56,13 @@ diff_test(
     file2 = ":actual_gfm_markdown",
 )
 
+diff_test(
+    name = "deps_diff_test",
+    failure_message = "Dokka did not resolve the API exposed by its compiled dependency.",
+    file1 = "//tests/integration/deps:expected_markdown",
+    file2 = "//tests/integration/deps:actual_markdown",
+)
+
 dokka(
     name = "html_docs",
     srcs = glob(["src/main/kotlin/**/*.kt"]),
@@ -157,10 +164,10 @@ test_suite(
     name = "tests",
     tests = [
         ":configured_publication_docs_test",
+        ":deps_diff_test",
         ":derived_module_defaults_test",
         ":generated_docs_test",
         ":gfm_docs_diff_test",
         ":multi_module_docs_test",
-        "//tests/integration/deps:deps_diff_test",
     ],
 )

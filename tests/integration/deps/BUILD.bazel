@@ -1,5 +1,4 @@
 load("@bazel_lib//lib:copy_to_directory.bzl", "copy_to_directory")
-load("@bazel_lib//lib:diff_test.bzl", "diff_test")
 load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
 load("//dokka:defs.bzl", "dokka", "dokka_config")
 
@@ -32,17 +31,12 @@ copy_to_directory(
         "-dependency -a-p-i/com.example/-uses-dependency": "uses-dependency",
     },
     root_paths = ["tests/integration/deps/docs"],
+    visibility = ["//tests/integration:__pkg__"],
 )
 
 copy_to_directory(
     name = "expected_markdown",
     srcs = glob(["fixtures/**/*.md"]),
     root_paths = ["tests/integration/deps/fixtures"],
-)
-
-diff_test(
-    name = "deps_diff_test",
-    failure_message = "Dokka did not resolve the API exposed by its compiled dependency.",
-    file1 = ":expected_markdown",
-    file2 = ":actual_markdown",
+    visibility = ["//tests/integration:__pkg__"],
 )
