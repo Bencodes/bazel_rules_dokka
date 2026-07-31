@@ -1,12 +1,12 @@
 {
-  "homepage": "https://github.com/Bencodes/bazel_rules_dokka",
+  "homepage": "https://github.com/Bencodes/rules_dokka",
   "maintainers": [
     {
       "github": "Bencodes"
     }
   ],
   "repository": [
-    "github:Bencodes/bazel_rules_dokka"
+    "github:Bencodes/rules_dokka"
   ],
   "versions": [],
   "yanked_versions": {}
