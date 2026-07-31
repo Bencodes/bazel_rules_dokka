@@ -99,6 +99,13 @@ dokka(
 )
 
 dokka(
+    name = "deps_fixture",
+    srcs = ["DepsFixture.kt"],
+    tags = ["manual"],
+    deps = [":dependency"],
+)
+
+dokka(
     name = "docs",
     srcs = ["Fixture.kt"],
     tags = ["manual"],

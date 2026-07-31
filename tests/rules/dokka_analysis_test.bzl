@@ -216,6 +216,28 @@ def _dokka_wasm_test_impl(ctx):
 
     return analysistest.end(env)
 
+def _dokka_deps_test_impl(ctx):
+    env = analysistest.begin(ctx)
+
+    for configuration_basename in [
+        "deps_fixture.dokka.json",
+        "deps_fixture.dokka-partial.json",
+    ]:
+        write_action = _write_action_for_output(env, configuration_basename)
+        if write_action:
+            configuration = json.decode(write_action.content)
+            classpath = configuration["sourceSets"][0]["classpath"]
+            asserts.true(env, _contains_fragment(classpath, "dependency.abi.jar"))
+
+    for mnemonic in ["Dokka", "DokkaPartial"]:
+        actions = _actions_with_mnemonic(env, mnemonic)
+        asserts.equals(env, 1, len(actions))
+        if actions:
+            input_basenames = [file.basename for file in actions[0].inputs.to_list()]
+            asserts.true(env, "dependency.abi.jar" in input_basenames)
+
+    return analysistest.end(env)
+
 def _dokka_multi_module_test_impl(ctx):
     env = analysistest.begin(ctx)
     target = analysistest.target_under_test(env)
@@ -417,6 +439,7 @@ def _non_html_module_test_impl(ctx):
 
 _dokka_configuration_test = analysistest.make(_dokka_configuration_test_impl)
 _dokka_defaults_test = analysistest.make(_dokka_defaults_test_impl)
+_dokka_deps_test = analysistest.make(_dokka_deps_test_impl)
 _dokka_wasm_test = analysistest.make(_dokka_wasm_test_impl)
 _dokka_multi_module_test = analysistest.make(_dokka_multi_module_test_impl)
 _dokka_reusable_config_test = analysistest.make(_dokka_reusable_config_test_impl)
@@ -459,6 +482,10 @@ def dokka_analysis_test_suite(name):
         name = name + "_defaults",
         target_under_test = ":defaults_fixture",
     )
+    _dokka_deps_test(
+        name = name + "_deps",
+        target_under_test = ":deps_fixture",
+    )
     _dokka_wasm_test(
         name = name + "_wasm",
         target_under_test = ":wasm_fixture",
@@ -500,6 +527,7 @@ def dokka_analysis_test_suite(name):
         tests = [
             ":" + name + "_configuration",
             ":" + name + "_defaults",
+            ":" + name + "_deps",
             ":" + name + "_duplicate_module_name",
             ":" + name + "_duplicate_module_path",
             ":" + name + "_invalid_config",
